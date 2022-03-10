@@ -1,6 +1,6 @@
 /**
- * SO, 2017
- * Lab #2, Operatii I/O simple
+ * SO
+ * Lab #2, Simple I/O operations
  *
  * Useful structures/macros
  */
@@ -16,7 +16,7 @@
 		if (assertion) {						\
 			fprintf(stderr, "(%s, %s, %d): ",			\
 					__FILE__, __FUNCTION__, __LINE__);	\
-			PrintLastError(call_description);			\
+			perror(call_description);			\
 			exit(EXIT_FAILURE);					\
 		}								\
 	} while (0)
