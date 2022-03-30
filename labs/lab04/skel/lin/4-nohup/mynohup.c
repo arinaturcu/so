@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 #define NOHUP_OUT_FILE		"nohup.out"
 
@@ -29,6 +29,7 @@ static void set_signals(void)
 	memset(&sa, 0, sizeof(sa));
 
 	/* TODO - ignore SIGHUP */
+	signal(SIGHUP, SIG_IGN);
 
 }
 
@@ -45,6 +46,10 @@ static void exec_func(int argc, char **argv)
 	/* TODO - if stdout is a terminal
 	 * redirect output to NOHUP_OUT_FILE
 	 */
+	if (isatty(STDOUT_FILENO)) {
+		int fd = open(NOHUP_OUT_FILE, O_WRONLY | O_CREAT | O_TRUNC);
+		dup2(STDOUT_FILENO, fd);
+	}
 
 	/* exec a new process */
 	exec_args = malloc(argc * sizeof(*exec_args));

@@ -11,7 +11,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 static int must_leave;
 
@@ -62,7 +62,7 @@ int main(void)
 	sigemptyset(&mask);
 
 	memset(&signals, 0, sizeof(struct sigaction));
-	signals.sa_flags = SA_RESETHAND;
+	// signals.sa_flags = SA_RESETHAND;
 	signals.sa_mask = mask;
 
 	signals.sa_handler = sig_handler;
@@ -79,6 +79,7 @@ int main(void)
 	 * and cause a "Segmentation fault". When choosing your approach,
 	 * choose the most elegant.
 	 */
+	*(int *)mem = 1;
 
 	while (!must_leave)
 		sleep(1);

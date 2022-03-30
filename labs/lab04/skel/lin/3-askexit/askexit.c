@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 #define MY_MAX		32
 #define TIMEOUT		1
@@ -48,11 +48,18 @@ static void ask_handler(int signo)
 static void set_signals(void)
 {
 	struct sigaction sa;
-	int rc;
+	int rc, i;
 
 	/* TODO - set handler in struct sigaction sa */
+	sa.sa_handler = ask_handler;
 
 	/* TODO - handle SIGINT, SIGQUIT and SIGUSR1 signals */
+	int signals_to_mask[] = {SIGINT, SIGQUIT, SIGUSR1};
+
+	for (i = 0; i < sizeof(signals_to_mask)/sizeof(int); i++) {
+		rc = sigaction(signals_to_mask[i], &sa, NULL);
+		DIE(rc == -1, "sigaction");
+	}
 }
 
 int main(void)
