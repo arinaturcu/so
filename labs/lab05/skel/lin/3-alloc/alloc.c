@@ -8,7 +8,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "../utils/utils.h"
 
 #define	MAX		100
 #define CHUNK		10
@@ -21,12 +21,12 @@ int main(void)
 	int *buffer;
 
 	/* alloc buffer with initial size CHUNK */
-	buffer = malloc(CHUNK * sizeof(int));
+	buffer = calloc(CHUNK, sizeof(int));
 	DIE(buffer == NULL, "malloc");
 
 	srand(SEED);
 	do {
-		nr = 1 + rand()%MAX;
+		nr = 1 + rand() % MAX;
 		buffer[count] = nr;
 		count++;
 
@@ -34,12 +34,15 @@ int main(void)
 			printf("Resize buffer to fit %d elements\n", count);
 
 			/* resize buffer to fit CHUNK elements */
-			buffer =  malloc((count + CHUNK) * sizeof(int));
+			free(buffer);
+			buffer = calloc((count + CHUNK), sizeof(int));
 			DIE(buffer == NULL, "malloc");
 		}
 
 		printf("buffer[%d]=%d\n", count - 1, buffer[count-1]);
 	} while (buffer[count-1] != STOP);
+
+	free(buffer);
 
 	return 0;
 }

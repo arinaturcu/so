@@ -12,7 +12,7 @@
 
 char *read_message(void)
 {
-	char buf[BUFSIZ];
+	char *buf = calloc(BUFSIZ, sizeof(char));
 
 	printf("Give input string: ");
 	fgets(buf, 1024, stdin);
@@ -40,6 +40,7 @@ int main(void)
 	upper_string(message);
 
 	printf("\n\nString is %s\n", message);
+	free(message);
 
 	return 0;
 }

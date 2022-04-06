@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 #if defined(__i386__)
 #define get_esp(esp) __asm__("movl %%esp, %0;":"=&r"(esp))
@@ -52,7 +52,7 @@ void show_snapshot(void)
 {
 	for (i = 0; i < size; i++)
 		/* TODO1 - fill in the correct parameters to be printed */
-		printf("[%p]:0x%lx\n", /* TODO1 */);
+		printf("[%p]:0x%lx\n", stack[i].address, stack[i].value);
 }
 
 /**
@@ -61,8 +61,8 @@ void show_snapshot(void)
 void take_snapshot(void)
 {
 	for (p = ebp; p >= esp; p--) {
-		stack[size].address = /* TODO1: set the current address */
-		stack[size].value   = /* TODO1: set the value at address */
+		stack[size].address = p; /* TODO1: set the current address */
+		stack[size].value   = *p; /* TODO1: set the value at address */
 		size++;
 	}
 }
@@ -84,6 +84,7 @@ void f2(mytype a)
 	/* TODO2: use v so that when function 'f2' returns,
 	 * the 'show_message' function executes
 	 */
+	v[5] = (mytype)show_message;
 
 	/* save current stack pointer */
 	get_esp(esp);

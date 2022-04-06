@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 /**
  * TODO - inc() function must behave like a counter
@@ -20,7 +20,8 @@
  */
 int inc(void)
 {
-
+	static int count = 0;
+	return count++;
 }
 
 int main(void)
